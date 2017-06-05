@@ -29,6 +29,29 @@ class NoteController extends FOSRestController
         
         return new Response($response);
     }
+    
+    /**
+     * @Rest\View()
+     * @Rest\Get("/notes/vin/{vin_id}")
+     */
+    public function getNotesVinAction(Request $request)
+    {
+        $notes = $this->get('doctrine.orm.entity_manager')
+                        ->getRepository('AppBundle:Note')
+                        ->findAll();
+        
+        $notesVin = array();
+        foreach ($notes as $currentNote){
+            if ($currentNote->getVin()->getId() == $request->get("vin_id")){
+                $notesVin[] = $currentNote;
+            }
+        }
+            
+        $response = $this->get('jms_serializer')
+                        ->serialize($notesVin, "json");
+        
+        return new Response($response);
+    }
 
     /**
      * @Rest\View()
