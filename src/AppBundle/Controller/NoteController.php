@@ -96,6 +96,10 @@ class NoteController extends FOSRestController
         if (empty($notes)) {
             return new JsonResponse(['message' => 'Note non trouvé'], Response::HTTP_NOT_FOUND);
         }
+        
+        $notes->setTimestamp($request->get('timestamp'))
+            ->setCommentaire($request->get('commentaire'))
+            ->setNote($request->get('note'));
 
         $db = $this->get('doctrine.orm.entity_manager');
         $db->merge($notes);

@@ -69,7 +69,8 @@ class ExposantController extends FOSRestController
             ->setCp($request->get('cp'))
             ->setVille($request->get('ville'))
             ->setRegion($request->get('region'))
-            ->setSiteweb($request->get('siteweb'));
+            ->setSiteweb($request->get('siteweb'))
+            ->setPhoto($request->get('photo'));
 
         $db = $this->get('doctrine.orm.entity_manager');
         $db->persist($exposant);
@@ -106,6 +107,20 @@ class ExposantController extends FOSRestController
         if (empty($exposants)) {
             return new JsonResponse(['message' => 'exposant non trouvé'], Response::HTTP_NOT_FOUND);
         }
+        
+        $exposants->setEmplacement($request->get('emplacement'))
+            ->setNom($request->get('nom'))
+            ->setPrenom($request->get('prenom'))
+            ->setEmail($request->get('email'))
+            ->setPassword($request->get('password'))
+            ->setDomaine($request->get('domaine'))
+            ->setDescription($request->get('description'))
+            ->setAdresse($request->get('adresse'))
+            ->setCp($request->get('cp'))
+            ->setVille($request->get('ville'))
+            ->setRegion($request->get('region'))
+            ->setSiteweb($request->get('siteweb'))
+            ->setPhoto($request->get('photo'));
 
         $db = $this->get('doctrine.orm.entity_manager');
         $db->merge($exposants);

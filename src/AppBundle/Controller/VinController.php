@@ -57,6 +57,9 @@ class VinController extends FOSRestController
     public function postVinsAction(Request $request)
     {
         $vin = new Vin();
+        $exposant = $this->get('doctrine.orm.entity_manager')
+                        ->getRepository('AppBundle:Exposant')
+                        ->find($request->get("exposant"));
         $vin->setAppellation($request->get('appellation'))
             ->setAnnee($request->get('annee'))
             ->setType($request->get('type'))
@@ -65,7 +68,9 @@ class VinController extends FOSRestController
             ->setPrix($request->get('prix'))
             ->setScore($request->get('score'))
             ->setDescription($request->get('description'))
-            ->setAvis($request->get('avis'));
+            ->setAvis($request->get('avis'))
+            ->setPhoto($request->get('photo'))
+            ->setExposant($exposant);
 
         $db = $this->get('doctrine.orm.entity_manager');
         $db->persist($vin);
@@ -102,6 +107,17 @@ class VinController extends FOSRestController
         if (empty($vins)) {
             return new JsonResponse(['message' => 'Vin non trouvé'], Response::HTTP_NOT_FOUND);
         }
+        
+        $vins->setAppellation($request->get('appellation'))
+            ->setAnnee($request->get('annee'))
+            ->setType($request->get('type'))
+            ->setCepage($request->get('cepage'))
+            ->setAlcool($request->get('alcool'))
+            ->setPrix($request->get('prix'))
+            ->setScore($request->get('score'))
+            ->setDescription($request->get('description'))
+            ->setAvis($request->get('avis'))
+            ->setPhoto($request->get('photo'));
 
         $db = $this->get('doctrine.orm.entity_manager');
         $db->merge($vins);

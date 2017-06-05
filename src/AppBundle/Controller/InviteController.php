@@ -98,6 +98,12 @@ class InviteController extends FOSRestController
         if (empty($invites)) {
             return new JsonResponse(['message' => 'L\'invité n\'a pas été trouvé !'], Response::HTTP_NOT_FOUND);
         }
+        
+        $invites->setNom($request->get('nom'))
+            ->setPrenom($request->get('prenom'))
+            ->setEmail($request->get('email'))
+            ->setPassword($request->get('password'))
+            ->setPhoto($request->get('photo'));
 
         $db = $this->get('doctrine.orm.entity_manager');
         $db->merge($invites);
